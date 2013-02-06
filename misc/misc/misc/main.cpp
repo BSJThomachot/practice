@@ -1,4 +1,5 @@
 #include <iostream>
+#include <assert.h>
 
 using namespace std; 
 
@@ -14,8 +15,8 @@ int main (int argc, char * const argv[])
 	cin >> num;
 	cout << "\n";
 	// cout << MyOwnIOTA(num) << "\n";
-	char * buff = new char(32);
-	myOwnIOTA2(num,buff,32);
+	char * buff = new char(8);
+	myOwnIOTA2(num,buff,8);
 	cout << buff << "\n";
 
 	system("pause");
@@ -70,6 +71,8 @@ char * MyOwnIOTA(int num)
 // Int to string, for a decimal number
 void myOwnIOTA2(int num, char * str, int len)
 {
+	assert(len > 0);
+	
 	int digit = 0;
 	int n = num;
 	bool neg = false;
@@ -85,28 +88,18 @@ void myOwnIOTA2(int num, char * str, int len)
 		str[digit] = n%10 + '0';
 		n /= 10;
 		++digit;
-		if (digit == len)
-		{
-			cout << "not enough space in buffer";
-			str[digit - 1] = '\0'; 
-			return;
-		}
+		assert(digit < len);
 	}
 	if (neg)
 	{
 		str[digit] = '-';
 		++digit;
-		if (digit == len)
-		{
-			cout << "not enough space in buffer \n";
-			str[digit - 1] = '\0'; 
-			return;
-		}
+		assert(digit < len);
 	}
 
 	str[digit] = '\0'; 
+	
 	// swap the string
-
 	int i = 0;
 	char temp;
 	for(int i = 0; i < digit/2; ++i)
@@ -168,18 +161,15 @@ int	longestRun(const char * str, char * longestChar)
 
 /*
 
-1.
-Your function is using more division/modulus operations than are needed.
-In addition, note the inelegance of multiple if (num < 0) statements. 
-Rewrite this function so that it is more elegant and works without counting the number of digits.
-Do 2 in one
- 
-2.
-Tell me why this code would be unsafe and unusable if it were distributed as part of a C++ library.  How would you fix this?
+ Do you know the reasons why we would use new over malloc?
+ new calls the constructor, which is more a C++ thing.
+ it knows about the type of the object and therefore doesnt need to cast 
+ new is an operator that can be overriden
+ and it throws an exception 
 
-First make sure Malloc successfully allocated memory, then we will need to free it somewhere. 
-I am using Malloc, but not freeing, memory leak. The user might bot know he needs to free the memory
-I should use New and delete in C++
-Should parse in a buffer
+
+If I wanted to write the function in such a way that it allocated the correct amount of memory internally
+and returned the result to the client, how would I do this safely?
+Make the function a constructor? 
 
 */
