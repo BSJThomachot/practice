@@ -8,6 +8,8 @@ void myOwnIOTA2(int num, char * str, int len);
 int	longestRun(const char * str, char * longestChar);
 
 
+int fib1(int n);
+
 int main (int argc, char * const argv[])
 {
     cout << "Enter Number:\n";
@@ -157,6 +159,37 @@ int	longestRun(const char * str, char * longestChar)
 	
 	// return 
 	return longestCount;
+}
+
+// recursive version of fibonacci
+int fib1(int n)
+{
+	if (n == 0)
+	{
+		return 0;
+	}
+	if (n == 1)
+	{
+		return 1;
+	}
+	// recursively call  2 previous number
+	return fib1(n - 1) + fib1(n - 2);
+}
+
+int fib2(int n)
+{
+	int prev = -1;
+	int result = 1;
+	int sum;
+	
+	int i;
+	for(i = 0; i <= n; ++i)
+	{
+		sum = result + prev;
+		prev = result;
+		result = sum;
+	}
+	return result;
 }
 
 /*
