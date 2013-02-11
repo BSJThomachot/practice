@@ -1,14 +1,18 @@
 #include <iostream>
 #include <assert.h>
+#include <cmath>
 
 using namespace std; 
 
-char * MyOwnIOTA(int num);
-void myOwnIOTA2(int num, char * str, int len);
+char * MyOwnITOA(int num);
+void myOwnITOA2(int num, char * str, int len);
+void mySafeITOA(int num, char * str, int len);
 int	longestRun(const char * str, char * longestChar);
 
 
 int fib1(int n);
+int fib2(int n);
+bool isPrime(int n);
 
 int main (int argc, char * const argv[])
 {
@@ -16,23 +20,52 @@ int main (int argc, char * const argv[])
 	int num = 0;
 	cin >> num;
 	cout << "\n";
+
 	// cout << MyOwnIOTA(num) << "\n";
-	char * buff = new char(8);
-	myOwnIOTA2(num,buff,8);
+
+	char * buff = new char(2);
+	myOwnITOA2(num,buff,2);
 	cout << buff << "\n";
 
+	try 
+	{
+		mySafeITOA(num, buff, 8);
+	}
+	catch (const char* msg)
+	{
+		cout << "Error: " << msg << endl;
+	}
+
 	system("pause");
-	
+
+	/*
 	char outputChar = 'a';
 	longestRun("aabbcccdd", &outputChar);
 
 	system("pause");
+	int number = 0;
+	cout << "Enter number: ";
+	cin >> number;
+	while (number != 0)
+	{
+		if (isPrime(number))
+		{		
+			cout << "Prime! \n";
+		}
+		else
+		{
+			cout << "Not Prime! \n";
+		}
+		cout << "Enter number: ";
+		cin >> number;
+	};
+	*/
 	
     return 0;
 } 
 
 // Int to string, for a decimal number
-char * MyOwnIOTA(int num)
+char * MyOwnIT0A(int num)
 {
 	// find ouf how many digits the number has 
 	int digits = 0;
@@ -71,9 +104,56 @@ char * MyOwnIOTA(int num)
 
 
 // Int to string, for a decimal number
-void myOwnIOTA2(int num, char * str, int len)
+void myOwnITOA2(int num, char * str, int len)
 {
 	assert(len > 0);
+	
+	int digit = 0;
+	int n = num;
+	bool neg = false;
+	// check if neg
+	if (num < 0)
+	{
+		neg = true;
+		n = -num; 
+	}
+	// convert 
+	while (n != 0 && len > 1)
+	{
+		str[digit] = n%10 + '0';
+		n /= 10;
+		++digit;
+		--len;
+		// assert(digit < len);
+	}
+	if (neg && len > 1)
+	{
+		str[digit] = '-';
+		++digit;
+		--len;
+		// assert(digit < len);
+	}
+
+	str[digit] = '\0'; 
+	
+	// swap the string
+	int i = 0;
+	char temp;
+	for(int i = 0; i < digit/2; ++i)
+	{
+		temp = str[i];
+		str[i]	= str[digit - 1 - i];
+		str[digit - 1 - i]	= temp;
+	}
+}
+
+// Int to string, for a decimal number
+void mySafeITOA(int num, char * str, int len)
+{
+	if (len <= 0)
+	{
+		throw "Buffer too small";
+	}
 	
 	int digit = 0;
 	int n = num;
@@ -91,12 +171,19 @@ void myOwnIOTA2(int num, char * str, int len)
 		n /= 10;
 		++digit;
 		assert(digit < len);
+		if (digit < len)
+		{
+			throw "Buffer too small";
+		}
 	}
 	if (neg)
 	{
 		str[digit] = '-';
 		++digit;
-		assert(digit < len);
+		if (digit < len)
+		{
+			throw "Buffer too small";
+		}
 	}
 
 	str[digit] = '\0'; 
@@ -176,6 +263,7 @@ int fib1(int n)
 	return fib1(n - 1) + fib1(n - 2);
 }
 
+// fib using iteration
 int fib2(int n)
 {
 	int prev = -1;
@@ -192,17 +280,42 @@ int fib2(int n)
 	return result;
 }
 
+bool isPrime(int n)
+{
+	// first prime is 2
+	if (n < 2)
+	{
+		return false;
+	}
+	else
+	{
+		// get square root
+		int m = (int)sqrt((float)n);
+		// see if n can be diveded by numbers less tran its square root
+		int i = 0;
+		for (i = m; i >= 2; --i)
+		{
+			if (n % i == 0)
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+}
+
 /*
 
- Do you know the reasons why we would use new over malloc?
- new calls the constructor, which is more a C++ thing.
- it knows about the type of the object and therefore doesnt need to cast 
- new is an operator that can be overriden
- and it throws an exception 
-
-
-If I wanted to write the function in such a way that it allocated the correct amount of memory internally
-and returned the result to the client, how would I do this safely?
-Make the function a constructor? 
+5.
+The valid range of buffer length is already inherently built into your algorithm.  
+It is more elegant, clear and robust if you build your algorithm in a way so that it implicitly handles all values of this input variable.
+Rewrite your algorithm in a way that it does not have to explicitly check the value of len.
+ 
+6.
+Rewrite your itoa function so that it delegates the responsibility of error handling back to the caller.
+ 
+7.
+Write a new version of your itoa function so that it uses C++ exception handling.  
+Show how the client code would be structured to handle the exceptions.
 
 */
