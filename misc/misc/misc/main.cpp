@@ -1,10 +1,13 @@
 #include <iostream>
 #include <assert.h>
+#include <string>
 #include <cmath>
+#include "SMART_PTR.h"
 
 using namespace std; 
 
 char * MyOwnITOA(int num);
+SMART_PTR<string> MyITOA(int num);
 void myOwnITOA2(int num, char * str, int len);
 void mySafeITOA(int num, char * str, int len);
 int	longestRun(const char * str, char * longestChar);
@@ -16,29 +19,43 @@ bool isPrime(int n);
 
 int main (int argc, char * const argv[])
 {
-    cout << "Enter Number:\n";
+    // pick a number
+	cout << "Enter Number:\n";
 	int num = 0;
 	cin >> num;
 	cout << "\n";
 
-	// cout << MyOwnIOTA(num) << "\n";
-
-	char * buff = new char(2);
-	myOwnITOA2(num,buff,2);
-	cout << buff << "\n";
-
-	try 
+	// pikc a buffer size 
+	bool passed = false;
+	while (!passed)
 	{
-		mySafeITOA(num, buff, 8);
+		cout << "Enter a Buffer size:\n";
+		int len = 0;
+		cin >> len;
+		cout << "\n";
+		char * buff = new char[len];
+		try 
+		{
+			mySafeITOA(num, buff, len);
+			passed = true;
+		}
+		catch (int e)
+		{
+			cout << "Error: " << e << " is too small for buffer size" << endl;
+			passed = false;
+		}
 	}
-	catch (const char* msg)
-	{
-		cout << "Error: " << msg << endl;
-	}
+
+	// myOwnITOA2(num,buff,2);
+	// cout << buff << "\n";
+
+	SMART_PTR<string> result = MyITOA(num);
+	cout << *result << endl;
 
 	system("pause");
 
-	/*
+	/* 
+
 	char outputChar = 'a';
 	longestRun("aabbcccdd", &outputChar);
 
@@ -59,13 +76,14 @@ int main (int argc, char * const argv[])
 		cout << "Enter number: ";
 		cin >> number;
 	};
+
 	*/
 	
     return 0;
 } 
 
 // Int to string, for a decimal number
-char * MyOwnIT0A(int num)
+char * MyOwnITOA(int num)
 {
 	// find ouf how many digits the number has 
 	int digits = 0;
@@ -102,12 +120,53 @@ char * MyOwnIT0A(int num)
 	return number;
 }
 
+// Int to string, for a decimal number, using smart pointer
+SMART_PTR<string> MyITOA(int num)
+{
+	char buff[64];
+	int digit = 0;
+	int n = num;
+	bool neg = false;
+	// check if neg
+	if (num < 0)
+	{
+		neg = true;
+		n = -num; 
+	}
+	// convert 
+	while (n != 0)
+	{
+		buff[digit] = n%10 + '0';
+		n /= 10;
+		++digit;
+	}
+	if (neg)
+	{
+		buff[digit] = '-';
+		++digit;
+	}
+	// end the text
+	buff[digit] = '\0'; 
+	
+	// swap the string
+	int i = 0;
+	char temp;
+	for(int i = 0; i < digit/2; ++i)
+	{
+		temp = buff[i];
+		buff[i]	= buff[digit - 1 - i];
+		buff[digit - 1 - i]	= temp;
+	}
+
+	// the number in string
+	SMART_PTR<string> spNumber(new string(buff));
+	return spNumber;
+}
+
 
 // Int to string, for a decimal number
 void myOwnITOA2(int num, char * str, int len)
 {
-	assert(len > 0);
-	
 	int digit = 0;
 	int n = num;
 	bool neg = false;
@@ -124,14 +183,12 @@ void myOwnITOA2(int num, char * str, int len)
 		n /= 10;
 		++digit;
 		--len;
-		// assert(digit < len);
 	}
 	if (neg && len > 1)
 	{
 		str[digit] = '-';
 		++digit;
 		--len;
-		// assert(digit < len);
 	}
 
 	str[digit] = '\0'; 
@@ -152,7 +209,7 @@ void mySafeITOA(int num, char * str, int len)
 {
 	if (len <= 0)
 	{
-		throw "Buffer too small";
+		throw len;
 	}
 	
 	int digit = 0;
@@ -170,19 +227,18 @@ void mySafeITOA(int num, char * str, int len)
 		str[digit] = n%10 + '0';
 		n /= 10;
 		++digit;
-		assert(digit < len);
-		if (digit < len)
+		if (digit >= len)
 		{
-			throw "Buffer too small";
+			throw len;
 		}
 	}
 	if (neg)
 	{
 		str[digit] = '-';
 		++digit;
-		if (digit < len)
+		if (digit >= len)
 		{
-			throw "Buffer too small";
+			throw len;
 		}
 	}
 
@@ -273,8 +329,11 @@ int fib2(int n)
 	int i;
 	for(i = 0; i <= n; ++i)
 	{
+		// add what we have plus the one before
 		sum = result + prev;
+		// update previous
 		prev = result;
+		// result is the sum
 		result = sum;
 	}
 	return result;
@@ -303,19 +362,3 @@ bool isPrime(int n)
 		return true;
 	}
 }
-
-/*
-
-5.
-The valid range of buffer length is already inherently built into your algorithm.  
-It is more elegant, clear and robust if you build your algorithm in a way so that it implicitly handles all values of this input variable.
-Rewrite your algorithm in a way that it does not have to explicitly check the value of len.
- 
-6.
-Rewrite your itoa function so that it delegates the responsibility of error handling back to the caller.
- 
-7.
-Write a new version of your itoa function so that it uses C++ exception handling.  
-Show how the client code would be structured to handle the exceptions.
-
-*/

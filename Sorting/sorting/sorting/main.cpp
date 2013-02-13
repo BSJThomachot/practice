@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 	system("pause");
 
 	// quicksort
-	int nums[] = {12,43,13,5,8,10,11,9,20,17};
+	int nums[] = {12,43,13,5,8,99,11,9,20,17};
     int n = 10; // size of array
 	quickSort(nums, 0, n - 1);
 
@@ -25,11 +25,10 @@ int main(int argc, char *argv[])
 
 
 	// merge sort
-	int nums2[] = {12,43,13,5,8,10,11,9,20,17}; 
+	int nums2[] = {12,43,13,5,8,99,11,9,20,17}; 
 	int const count = sizeof(nums2)/sizeof(int);
 	// a temp array used in mergesort
     int nums3[count];
-
     mergeSort(nums2,nums3,0,count-1);
     for(i = 0; i < count; i++)
 	{
@@ -88,57 +87,61 @@ void quickSort(int * arr, int left, int right)
 
 void mergeSort(int * arr1, int * arr2, int left, int right)
 {
-    if(left < right)
+    // if size isnt 0
+	if(left < right) 
     {
-        int pivot = (left+right)/2;
+        int pivot = (left + right)/2;
 		// recursevely call mergesort on both halves of the array
-        mergeSort(arr1,arr2,left,pivot);
-        mergeSort(arr1,arr2,pivot+1,right);
+        mergeSort(arr1, arr2, left, pivot);
+        mergeSort(arr1, arr2, pivot+1, right);
 		// merge the result
-        merge(arr1,arr2,left,pivot,right);
+        merge(arr1, arr2, left, pivot, right);
     }
 }
 
 void merge(int * arr1, int * arr2, int left, int pivot, int right)
 {
-    int k;
-    int h = left;
     int i = left;
     int j = pivot+1;
+	int k = left;
+	int a; // used for loop
 
-    while((h<=pivot)&&(j<=right))
+	// merge in a sorted order
+    while( (k <= pivot) && (j <= right))
     {
-        if(arr1[h]<= arr1[j])
+        if(arr1[k] <= arr1[j])
         {
-            arr2[i]=arr1[h];
-            h++;
+            arr2[i] = arr1[k]; // h is the one we want
+            ++k;
         }
         else
         {
-            arr2[i]=arr1[j];
-            j++;
+            arr2[i] = arr1[j]; // j is the one we want
+            ++j;
         }
-        i++;
+        ++i;
     }
-    if(h>pivot)
+	// merge the rest in the right array
+    if( k > pivot )
     {
-        for(k=j; k<=right; k++)
+        for( a = j; a <= right; ++a)
         {
-            arr2[i]=arr1[k];
-            i++;
+            arr2[i] = arr1[a];
+            ++i;
         }
     }
     else
     {
-        for(k=h; k<=pivot; k++)
+        for(a = k; a <= pivot; ++a)
         {
-            arr2[i]=arr1[k];
-            i++;
+            arr2[i] = arr1[a];
+            ++i;
         }
     }
-    for(k=left; k<=right; k++)
+	// merge the rest in the left array
+    for( a = left; a <= right; ++a)
 	{
-		arr1[k] = arr2[k];
+		arr1[a] = arr2[a];
 	}
 }
 
