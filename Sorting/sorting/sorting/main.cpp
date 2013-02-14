@@ -3,6 +3,7 @@
 using namespace std;
 
 void quickSort(int * arr, int left, int right);
+void bubbleSort(int arr[], int n);
 void mergeSort(int * arr1, int * arr2,int left, int right);
 void merge(int * arr1, int * arr2, int left, int pivot, int right);
 
@@ -37,37 +38,48 @@ int main(int argc, char *argv[])
     cout << "\n";
 
 
+	// bubble sort
+	int nums4[] = {12,43,13,5,8,99,11,9,20,17};
+    n = 10; // size of array
+	bubbleSort(nums4, n);
+
+	for (i = 0; i < n; ++i)
+	{
+		cout << nums4[i] << ", ";
+	}
+	cout << "\n";
+
 	system("pause");
 
 	return 0;
 }
 
-void quickSort(int * arr, int left, int right)
+void quickSort(int * input, int left, int right)
 {
 	int i = left;
 	int j = right;
 	int tmp;
-	int pivot = arr[(left + right) / 2];
+	int pivot = input[(left + right) / 2];
  
     // cut array in half, 
     while (i <= j)
 	{
-		// arr[i] is less than pivot, increment i
-		while (arr[i] < pivot)
+		// input[i] is less than pivot, increment i
+		while (input[i] < pivot)
 		{
 			++i;
 		}
-		// arr[j] is less than pivot, decrement j
-        while (arr[j] > pivot)
+		// input[j] is less than pivot, decrement j
+        while (input[j] > pivot)
 		{
 			--j;
 		}
 		// swap and keep going
         if (i <= j)
 		{
-			tmp = arr[i];
-			arr[i] = arr[j];
-			arr[j] = tmp;
+			tmp = input[i];
+			input[i] = input[j];
+			input[j] = tmp;
 			++i;
 			--j;
          }
@@ -76,14 +88,37 @@ void quickSort(int * arr, int left, int right)
       // recursively call quicksort on the rest
       if (left < j)
 	  {
-            quickSort(arr, left, j);
+            quickSort(input, left, j);
 	  }
       if (i < right)
 	  {
-            quickSort(arr, i, right);
+            quickSort(input, i, right);
 	  }
 }
 
+void bubbleSort(int input[], int n)
+{
+	bool sorted = false;
+	int tmp; // use for swapping
+	int j = 0; // use for interation
+	while (!sorted) 
+	{
+		// loop will stop once there will be nothing to sort
+		sorted = true;
+		++j;
+		for (int i = 0; i < n - j; i++)
+		{
+			// if higher, swap! 
+			if (input[i] > input[i + 1])
+			{
+				tmp = input[i];
+				input[i] = input[i + 1];
+				input[i + 1] = tmp;
+				sorted = false; // keep on sorting
+            }
+        }
+     }
+}
 
 void mergeSort(int * arr1, int * arr2, int left, int right)
 {
