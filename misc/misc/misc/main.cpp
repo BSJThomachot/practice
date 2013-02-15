@@ -12,6 +12,9 @@ void myOwnITOA2(int num, char * str, int len);
 void mySafeITOA(int num, char * str, int len);
 int	longestRun(const char * str, char * longestChar);
 
+void reverseWord(char * str);
+void reverse(char * start, char * end);
+
 
 int fib1(int n);
 int fib2(int n);
@@ -51,6 +54,13 @@ int main (int argc, char * const argv[])
 
 	SMART_PTR<string> result = MyITOA(num);
 	cout << *result << endl;
+
+	system("pause");
+
+
+	char text[] = "  A Toyota is a Toyota";
+	reverseWord(text);
+	cout << text << endl;
 
 	system("pause");
 
@@ -361,4 +371,44 @@ bool isPrime(int n)
 		}
 		return true;
 	}
+}
+
+// reverse a string, using a pointer for each edge of the string
+void reverse(char * start, char * end)
+{	
+	char temp;
+	while (start < end)
+	{
+		temp = *start;
+		*start++ = *end;
+		*end-- = temp;
+	}
+}
+
+// reverse words
+void reverseWord(char * str)
+{
+	char *start = NULL;
+	char *temp = str;
+	// we have first to reverse all the words
+    while(*temp)
+    {
+		// make sure we do not start with a space already
+		if ((start == NULL) && (*temp != ' '))
+        {
+            // let's start
+			start = temp;
+        }
+		// if we have a word, or we reach the end of the string
+        if(start && ((*(temp+1) == ' ') || (*(temp+1) == '\0')))
+        {
+            // reverse! 
+			reverse(start, temp);
+            start = NULL;
+        }
+		// keep on going through the string
+        temp++;
+    }
+	// Then reverse the result
+	reverse(str, temp-1);
 }
