@@ -15,6 +15,9 @@ int	longestRun(const char * str, char * longestChar);
 void reverseWord(char * str);
 void reverse(char * start, char * end);
 
+int findNextPalindrome(int num);
+int findNextPalindromeBase(int num, int base);
+
 
 int fib1(int n);
 int fib2(int n);
@@ -61,6 +64,17 @@ int main (int argc, char * const argv[])
 	char text[] = "  A Toyota is a Toyota";
 	reverseWord(text);
 	cout << text << endl;
+
+
+	system("pause");
+	int number = 0;
+	while (number != -1)
+	{
+		cout << "Enter number: ";
+		cin >> number;
+		int a = findNextPalindromeBase(number,2);
+		cout << "next palindrome is " << a << endl;
+	}
 
 	system("pause");
 
@@ -411,4 +425,68 @@ void reverseWord(char * str)
     }
 	// Then reverse the result
 	reverse(str, temp-1);
+}
+
+// find the next palindrome for a decimal number > 0
+int findNextPalindrome(int num)
+{
+	// start with the input number
+	int result = num;
+	bool palindrome = false;
+	// keep going until we find a palimdrome 
+	while (!palindrome)
+	{
+		int n = result;
+		int numReversed = 0;
+		// reverse number
+		while (n > 0)
+		{
+			int digit = n % 10;
+			numReversed = numReversed * 10 + digit;
+			n = n / 10;
+		}
+		// check if they are the same (ie palimdrome)
+		if (result == numReversed)
+		{
+			palindrome = true; // we can stop
+		}
+		else // otherwise, keep trying, imcrement result
+		{
+			++result;
+		}
+	}
+	// return the result
+	return result;
+}
+
+// find the next palindrome for a given base
+int findNextPalindromeBase(int num, int base)
+{
+	// start with the input number
+	int result = num;
+	bool palindrome = false;
+	// keep going until we find a palimdrome 
+	while (!palindrome)
+	{
+		int n = result;
+		int numReversed = 0;
+		// reverse number
+		while (n > 0)
+		{
+			int digit = n % base;
+			numReversed = numReversed * base + digit;
+			n = n / base;
+		}
+		// check if they are the same (ie palimdrome)
+		if (result == numReversed)
+		{
+			palindrome = true; // we can stop
+		}
+		else // otherwise, keep trying, imcrement result
+		{
+			++result;
+		}
+	}
+	// return the result
+	return result;
 }
