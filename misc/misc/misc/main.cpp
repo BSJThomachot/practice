@@ -18,6 +18,9 @@ void reverse(char * start, char * end);
 int findNextPalindrome(int num);
 int findNextPalindromeBase(int num, int base);
 
+int findGCD(int a, int b);
+int findGCD2(int a, int b);
+
 
 int fib1(int n);
 int fib2(int n);
@@ -74,6 +77,23 @@ int main (int argc, char * const argv[])
 		cin >> number;
 		int a = findNextPalindromeBase(number,2);
 		cout << "next palindrome is " << a << endl;
+	}
+
+	system("pause");
+
+
+	int number1 = 0;
+	int number2 = 0;
+	while (number1 != -1 && number2 != -1)
+	{
+		cout << "Enter first number: ";
+		cin >> number1;
+		cout << endl;
+		cout << "Enter second number: ";
+		cin >> number2;
+		cout << endl;
+		int a = findGCD2(number1,number2);
+		cout << "Greatest Common Divisor is: " << a << endl;
 	}
 
 	system("pause");
@@ -489,4 +509,32 @@ int findNextPalindromeBase(int num, int base)
 	}
 	// return the result
 	return result;
+}
+
+// find greatest common divisor of A and B, using euclidean algorithm
+int findGCD(int a, int b)
+{
+	int remainder = a % b;
+	while (remainder != 0)
+	{
+		a = b;
+		b = remainder;
+		remainder = a % b;
+	}
+
+	return b;
+}
+
+// find greatest common divisor of A and B, using euclidean algorithm (recursively)
+int findGCD2(int a, int b)
+{
+	int remainder = a % b;
+	if (remainder == 0)
+	{
+		return b;
+	}
+	else
+	{
+		return findGCD2(b,remainder);
+	}
 }
