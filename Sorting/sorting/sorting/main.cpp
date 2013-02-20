@@ -7,6 +7,7 @@ void bubbleSort(int  * nums, int n);
 void mergeSort(int * arr1, int * arr2,int left, int right);
 void merge(int * arr1, int * arr2, int left, int pivot, int right);
 void shellSort(int * nums, int len);
+void oddEvenSort(int * nums, int len);
 
 int main(int argc, char *argv[])
 {
@@ -58,6 +59,17 @@ int main(int argc, char *argv[])
 	for (i = 0; i < n; ++i)
 	{
 		cout << nums5[i] << ", ";
+	}
+	cout << "\n";
+
+	// odd even sort
+	int nums6[] = {12,43,13,5,8,99,11,9,20,17};
+    n = 10; // size of array
+	oddEvenSort(nums6, n);
+
+	for (i = 0; i < n; ++i)
+	{
+		cout << nums6[i] << ", ";
 	}
 	cout << "\n";
 
@@ -214,5 +226,38 @@ void shellSort(int * nums, int len)
              }
          }
      }
+}
+
+void oddEvenSort(int * nums, int len)
+{
+	bool sorted = false;
+	int i;
+	int temp;
+	while(!sorted)
+	{
+		sorted = true;
+		for(i = 1; i < len - 1; i += 2)
+		{
+			if(nums[i] > nums[i+1])
+			{
+				// swap(a, i, i+1);
+				temp = nums[i + 1];
+				nums[i + 1] = nums[i];
+				nums[i] = temp;
+				sorted = false;
+			}
+		}
+ 
+		for(i = 0; i < len - 1; i += 2)
+		{
+		    if(nums[i] > nums[i+1])
+		    {
+				temp = nums[i + 1];
+				nums[i + 1] = nums[i];
+				nums[i] = temp;
+				sorted = false;
+		    }
+		}
+	}
 }
 
