@@ -21,6 +21,10 @@ int findNextPalindromeBase(int num, int base);
 int findGCD(int a, int b);
 int findGCD2(int a, int b);
 
+float angleClock(int hour, int minute);
+
+int countDigit(float decimal);
+void deadFraction(float decimal);
 
 int fib1(int n);
 int fib2(int n);
@@ -28,11 +32,22 @@ bool isPrime(int n);
 
 int main (int argc, char * const argv[])
 {
-    // pick a number
+    
+	// decimal to fraction
+	float decimal = 0;
+	while (decimal != -1)
+	{
+		cout << "Enter decimal number: ";
+		cin >> decimal;
+		deadFraction(decimal);
+	}	
+	
+	// pick a number
 	cout << "Enter Number:\n";
 	int num = 0;
 	cin >> num;
 	cout << "\n";
+
 
 	// pikc a buffer size 
 	bool passed = false;
@@ -97,6 +112,21 @@ int main (int argc, char * const argv[])
 	}
 
 	system("pause");
+
+	int hour = 0;
+	int minute = 0;
+	while (hour != -1 && minute != -1)
+	{
+		cout << "Enter Hour: ";
+		cin >> hour;
+		cout << endl;
+		cout << "Enter Minute: ";
+		cin >> minute;
+		cout << endl;
+		float a = angleClock(hour, minute);
+		cout << "Angle between the two hands is: " << a << endl;
+	}
+
 
 	/* 
 
@@ -537,4 +567,57 @@ int findGCD2(int a, int b)
 	{
 		return findGCD2(b,remainder);
 	}
+}
+
+// find smallest angle (in degrees) between the two hands of a clock
+float angleClock(int hour, int minute)
+{
+	float angleM = 360.0f/60.0f * minute;
+	float angleH = 360.0f/12.0f * hour;
+
+	float result = abs(angleH - angleM);
+	if (result > 180)
+	{
+		result = 360 - result;
+	}
+
+	return result;
+}
+
+void deadFraction(float decimal)
+{
+	float top = decimal;
+	float bot = 1;
+
+	int digit = countDigit(decimal);
+	float mul = pow(10.0f,digit);
+
+	top *= mul;
+	bot *= mul;
+
+	// see if we can divide the numbers, to find the simplest fraction possible
+	int div = findGCD((int)top,(int)bot);
+	while (div != 1)
+	{
+		top /= div;
+		bot /= div;
+		div = findGCD((int)top,(int)bot);
+	}
+
+	cout << top << "/" << bot << endl;
+}
+
+// count how many digits we have after the decimal point
+int countDigit(float decimal)
+{
+	int count = 0;
+	int check = (int)decimal;
+	while (decimal - check != 0) // check if there is nothing after decimal point
+	{
+		decimal *= 10.0f;
+		check = (int)decimal;
+		count++;
+	}
+
+	return count;
 }
