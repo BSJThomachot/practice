@@ -3,7 +3,8 @@
 using namespace std;
 
 void quickSort(int * nums, int left, int right);
-void bubbleSort(int  * nums, int n);
+void bubbleSort(int  * nums, int len);
+void shakerSort(int * nums, int len); // cocktail shaker sort! 
 void mergeSort(int * arr1, int * arr2,int left, int right);
 void merge(int * arr1, int * arr2, int left, int pivot, int right);
 void shellSort(int * nums, int len);
@@ -73,6 +74,16 @@ int main(int argc, char *argv[])
 	}
 	cout << "\n";
 
+	// odd even sort
+	int nums7[] = {12,43,13,5,8,99,11,9,20,17};
+    n = 10; // size of array
+	shakerSort(nums7, n);
+	for (i = 0; i < n; ++i)
+	{
+		cout << nums7[i] << ", ";
+	}
+	cout << "\n";
+
 	system("pause");
 
 	return 0;
@@ -120,7 +131,7 @@ void quickSort(int * nums, int left, int right)
 	  }
 }
 
-void bubbleSort(int * nums, int n)
+void bubbleSort(int * nums, int len)
 {
 	bool sorted = false;
 	int tmp; // use for swapping
@@ -130,7 +141,7 @@ void bubbleSort(int * nums, int n)
 		// loop will stop once there will be nothing to sort
 		sorted = true;
 		++j;
-		for (int i = 0; i < n - j; i++)
+		for (int i = 0; i < len - j; ++i)
 		{
 			// if higher, swap! 
 			if (nums[i] > nums[i + 1])
@@ -257,6 +268,41 @@ void oddEvenSort(int * nums, int len)
 				nums[i] = temp;
 				sorted = false;
 		    }
+		}
+	}
+}
+
+
+void shakerSort(int * nums, int len)
+{
+	bool sorted = false;
+	int temp;
+	int i;
+	while (!sorted)
+	{
+		sorted = true;
+		// descending swapping
+		for( i = len - 1; i > 0; --i)
+		{
+			if( nums[i-1] > nums[i] )
+			{
+				// swap! 
+				temp = nums[i-1];
+				nums[i-1] = nums[i];
+				nums[i] = temp;
+				sorted = false;
+			}
+		}
+		// ascending swapping
+		for( i = 1; i < len; ++i)
+		{
+			if( nums[i-1] > nums[i] )
+			{
+				temp = nums[i-1];
+				nums[i-1] = nums[i];
+				nums[i] = temp;
+				sorted = false;
+			}
 		}
 	}
 }
