@@ -30,6 +30,9 @@ int fib1(int n);
 int fib2(int n);
 bool isPrime(int n);
 
+void reverse(char * str, int len);
+void reverse(char * str, int start, int end);
+
 int main (int argc, char * const argv[])
 {
     
@@ -79,10 +82,16 @@ int main (int argc, char * const argv[])
 	system("pause");
 
 
-	char text[] = "  A Toyota is a Toyota";
+	char text[] = "This is a test";
 	reverseWord(text);
 	cout << text << endl;
-
+	reverse(text,14);
+	cout << text << endl;
+	reverse(text,0,14);
+	cout << text << endl;
+	
+	
+	/*
 
 	system("pause");
 	int number = 0;
@@ -127,7 +136,7 @@ int main (int argc, char * const argv[])
 		cout << "Angle between the two hands is: " << a << endl;
 	}
 
-
+	*/
 	/* 
 
 	char outputChar = 'a';
@@ -326,6 +335,34 @@ void mySafeITOA(int num, char * str, int len)
 		temp = str[i];
 		str[i]	= str[digit - 1 - i];
 		str[digit - 1 - i]	= temp;
+	}
+}
+
+// reverse a string using iteration
+void reverse(char * str, int len)
+{
+	int i = 0;
+	char temp;
+	for(int i = 0; i < len/2; ++i)
+	{
+		temp = str[i];
+		str[i]	= str[len - 1 - i];
+		str[len - 1 - i]	= temp;
+	}
+}
+
+// reverse a string using recursion
+void reverse(char * str, int start, int end)
+{
+	if (start < end)
+	{
+		int i = 0;
+		char temp;
+		temp = str[start];
+		str[start]	= str[end - 1];
+		str[start]	= temp;
+
+		reverse(str,start + 1,end - 1);
 	}
 }
 
@@ -574,6 +611,9 @@ float angleClock(int hour, int minute)
 {
 	float angleM = 360.0f/60.0f * minute;
 	float angleH = 360.0f/12.0f * hour;
+	// since the hour one is not exactly on a number, find out the little extra
+	float interval = minute / 60.0f;
+	angleH += interval * 360.0f/12.0f;
 
 	float result = abs(angleH - angleM);
 	if (result > 180)
