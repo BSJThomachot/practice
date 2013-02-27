@@ -78,6 +78,7 @@
     <ClCompile Include="Reference.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BufferOverflowException.h" />
     <ClInclude Include="Reference.h" />
     <ClInclude Include="SmartPtr.h" />
   </ItemGroup>

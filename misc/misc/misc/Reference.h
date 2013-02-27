@@ -1,9 +1,9 @@
 #ifndef __REFCOUNT_H_
 #define __REFCOUNT_H_
+// class is used to keep track of how many times a smart pointer is being referenced 
 class Reference
 {
 private:
-	// Reference counter
 	int m_iCounter;
 public:
 	Reference(void);

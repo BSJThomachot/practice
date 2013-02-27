@@ -3,6 +3,7 @@
 #include <string>
 #include <cmath>
 #include "SmartPtr.h"
+#include "BufferOverflowException.h"
 
 using namespace std; 
 
@@ -33,6 +34,8 @@ bool isPrime(int n);
 
 void reverse(char * str, int len);
 void reverse(char * str, int start, int end);
+
+bool isAnagram(char * word, int len1, char * drow, int len2);
 
 int main (int argc, char * const argv[])
 {
@@ -67,9 +70,9 @@ int main (int argc, char * const argv[])
 			mySafeITOA(num, buff, len);
 			passed = true;
 		}
-		catch (int e)
+		catch (BufferOverflowException& e)
 		{
-			cout << "Error: " << e << " is too small for buffer size" << endl;
+			cout << "Error: " << e.what() << endl;
 			passed = false;
 		}
 		delete buff; // DONT FORGET TO DELETE!!
@@ -297,7 +300,7 @@ void mySafeITOA(int num, char * str, int len)
 {
 	if (len <= 0)
 	{
-		throw len;
+		throw BufferOverflowException("Buffer Overflow.");
 	}
 	
 	int digit = 0;
@@ -317,7 +320,7 @@ void mySafeITOA(int num, char * str, int len)
 		++digit;
 		if (digit >= len)
 		{
-			throw len;
+			throw BufferOverflowException("Buffer Overflow.");
 		}
 	}
 	if (neg)
@@ -326,7 +329,7 @@ void mySafeITOA(int num, char * str, int len)
 		++digit;
 		if (digit >= len)
 		{
-			throw len;
+			throw BufferOverflowException("Buffer Overflow.");
 		}
 	}
 
@@ -666,3 +669,11 @@ int countDigit(float decimal)
 
 	return count;
 }
+
+/* Copy it from Paper to code! 
+bool isAnagram(char * word1, int len1, char * word2, int len2)
+{
+	// check if word1.sort() == word2.sort() 
+}
+
+*/
