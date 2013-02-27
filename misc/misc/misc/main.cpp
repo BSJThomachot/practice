@@ -7,7 +7,7 @@
 using namespace std; 
 
 char * MyOwnITOA(int num);
-SMART_PTR<string> MyITOA(int num);
+SMART_PTR<char *> MyITOA(int num);
 void myOwnITOA2(int num, char * str, int len);
 void mySafeITOA(int num, char * str, int len);
 int	longestRun(const char * str, char * longestChar);
@@ -36,14 +36,14 @@ void reverse(char * str, int start, int end);
 int main (int argc, char * const argv[])
 {
     
-	// decimal to fraction
-	float decimal = 0;
-	while (decimal != -1)
-	{
-		cout << "Enter decimal number: ";
-		cin >> decimal;
-		deadFraction(decimal);
-	}	
+	// // decimal to fraction
+	// float decimal = 0;
+	// while (decimal != -1)
+	// {
+	// 	cout << "Enter decimal number: ";
+	// 	cin >> decimal;
+	// 	deadFraction(decimal);
+	// }	
 	
 	// pick a number
 	cout << "Enter Number:\n";
@@ -71,12 +71,13 @@ int main (int argc, char * const argv[])
 			cout << "Error: " << e << " is too small for buffer size" << endl;
 			passed = false;
 		}
+		delete buff; // DONT FORGET TO DELETE!!
 	}
 
 	// myOwnITOA2(num,buff,2);
 	// cout << buff << "\n";
 
-	SMART_PTR<string> result = MyITOA(num);
+	SMART_PTR<char *> result = MyITOA(num);
 	cout << *result << endl;
 
 	system("pause");
@@ -161,7 +162,6 @@ int main (int argc, char * const argv[])
 	};
 
 	*/
-	
     return 0;
 } 
 
@@ -204,7 +204,7 @@ char * MyOwnITOA(int num)
 }
 
 // Int to string, for a decimal number, using smart pointer
-SMART_PTR<string> MyITOA(int num)
+SMART_PTR<char *> MyITOA(int num)
 {
 	char buff[64];
 	int digit = 0;
@@ -242,7 +242,7 @@ SMART_PTR<string> MyITOA(int num)
 	}
 
 	// the number in string
-	SMART_PTR<string> spNumber(new string(buff));
+	SMART_PTR<char *> spNumber(new char[64]);
 	return spNumber;
 }
 

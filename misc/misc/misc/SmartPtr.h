@@ -1,7 +1,7 @@
 #pragma once
 #include "Reference.h"
 // template for smart pointer
-template <class T> class SMART_PTR
+template <class T> class SmartPtr
 {
 private: 
 	// the raw pointer used by the smart pointer
@@ -11,7 +11,7 @@ private:
 public:
 
 	// Defaut constructor
-	SMART_PTR(void)
+	SmartPtr(void)
 	{
 		m_pPointer = NULL;
 		m_pRef = new Reference();
@@ -19,7 +19,7 @@ public:
 	}
 
 	// Constructor
-	SMART_PTR(T* pPointer)
+	SmartPtr(T* pPointer)
 	{
 		m_pPointer = pPointer;
 		m_pRef = new Reference();
@@ -27,7 +27,7 @@ public:
 	}
 
 	// Copy Constructor
-	SMART_PTR(SMART_PTR<T>& smart_ptr)
+	SmartPtr(SMART_PTR<T>& smart_ptr)
     {
 		m_pPointer = smart_ptr.m_pPointer;
 		m_pRef = smart_ptr.m_pRef;
@@ -35,7 +35,7 @@ public:
     }
 
 	// Destructor
-	~SMART_PTR(void)
+	~SmartPtr(void)
 	{
 		// loses a reference 
 		m_pRef->DeleteReference();
@@ -59,7 +59,7 @@ public:
     }
 
 	// overload = operator
-	SMART_PTR<T>&  operator = (const SMART_PTR<T>& smart_ptr)
+	SmartPtr<T>&  operator = (const SmartPtr<T>& smart_ptr)
 	{
 		// if not already the same
         if (this != &smart_ptr) 
