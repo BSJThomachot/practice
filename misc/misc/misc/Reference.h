@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __REFCOUNT_H_
+#define __REFCOUNT_H_
 class Reference
 {
 private:
@@ -12,4 +13,6 @@ public:
 	void DeleteReference(void);
 	int GetReferenceCount(void);
 };
+
+#endif 
 

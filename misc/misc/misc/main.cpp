@@ -2,12 +2,13 @@
 #include <assert.h>
 #include <string>
 #include <cmath>
-#include "SMART_PTR.h"
+#include "SmartPtr.h"
 
 using namespace std; 
 
 char * MyOwnITOA(int num);
-SMART_PTR<char *> MyITOA(int num);
+SmartPtr<char> MyITOA(int num);
+// SmartPtr<string> MyITOA(int num);
 void myOwnITOA2(int num, char * str, int len);
 void mySafeITOA(int num, char * str, int len);
 int	longestRun(const char * str, char * longestChar);
@@ -77,7 +78,8 @@ int main (int argc, char * const argv[])
 	// myOwnITOA2(num,buff,2);
 	// cout << buff << "\n";
 
-	SMART_PTR<char *> result = MyITOA(num);
+	SmartPtr<char> result = MyITOA(num);
+	// SmartPtr<string> result = MyITOA(num);
 	cout << *result << endl;
 
 	system("pause");
@@ -204,7 +206,9 @@ char * MyOwnITOA(int num)
 }
 
 // Int to string, for a decimal number, using smart pointer
-SMART_PTR<char *> MyITOA(int num)
+SmartPtr<char> MyITOA(int num)
+//SmartPtr<char> MyITOA(int num)
+// SmartPtr<string> MyITOA(int num)
 {
 	char buff[64];
 	int digit = 0;
@@ -242,7 +246,8 @@ SMART_PTR<char *> MyITOA(int num)
 	}
 
 	// the number in string
-	SMART_PTR<char *> spNumber(new char[64]);
+	SmartPtr<char> spNumber(new char(*buff));
+	// SmartPtr<string> spNumber(new string(buff));
 	return spNumber;
 }
 

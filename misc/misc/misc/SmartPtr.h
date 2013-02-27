@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __SMARTPTR_H_
+#define __SMARTPTR_H_
 #include "Reference.h"
 // template for smart pointer
 template <class T> class SmartPtr
@@ -27,7 +28,7 @@ public:
 	}
 
 	// Copy Constructor
-	SmartPtr(SMART_PTR<T>& smart_ptr)
+	SmartPtr(SmartPtr<T>& smart_ptr)
     {
 		m_pPointer = smart_ptr.m_pPointer;
 		m_pRef = smart_ptr.m_pRef;
@@ -116,4 +117,6 @@ public:
 	}
 
 };
+
+#endif
 

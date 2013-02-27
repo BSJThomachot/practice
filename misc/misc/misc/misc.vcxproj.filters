@@ -23,10 +23,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SMART_PTR.h">
+    <ClInclude Include="Reference.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Reference.h">
+    <ClInclude Include="SmartPtr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
