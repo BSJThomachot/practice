@@ -75,7 +75,7 @@ int main (int argc, char * const argv[])
 			cout << "Error: " << e.what() << endl;
 			passed = false;
 		}
-		delete buff; // DONT FORGET TO DELETE!!
+		delete[] buff; // DONT FORGET TO DELETE!!
 	}
 
 	// myOwnITOA2(num,buff,2);
