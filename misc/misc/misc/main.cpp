@@ -32,9 +32,13 @@ int fib1(int n);
 int fib2(int n);
 bool isPrime(int n);
 
+void toh(int disk, int from, int tmp, int to); // recursive
+void toh2(int disks); // iterative binary
+
 void reverse(char * str, int len);
 void reverse(char * str, int start, int end);
 
+void bubbleSort(char  * nums, int len);
 bool isAnagram(char * word, int len1, char * drow, int len2);
 
 int main (int argc, char * const argv[])
@@ -49,6 +53,8 @@ int main (int argc, char * const argv[])
 	// 	deadFraction(decimal);
 	// }	
 	
+	/*
+
 	// pick a number
 	cout << "Enter Number:\n";
 	int num = 0;
@@ -167,6 +173,16 @@ int main (int argc, char * const argv[])
 	};
 
 	*/
+	toh(3,1,2,3);
+
+	char word1[] = "abcdef";
+	char word2[] = "abedfc";
+	if (isAnagram(word1, 6, word2, 6))
+		cout << "Anagram!" << endl;
+	else
+		cout << "not an anagram..." << endl;
+
+	system("pause");
     return 0;
 } 
 
@@ -670,10 +686,70 @@ int countDigit(float decimal)
 	return count;
 }
 
-/* Copy it from Paper to code! 
+// Copy it from Paper to code! 
 bool isAnagram(char * word1, int len1, char * word2, int len2)
 {
-	// check if word1.sort() == word2.sort() 
+	if (len1 != len2)
+		return false;
+	
+	bubbleSort(word1,len1);
+	bubbleSort(word2,len2);
+
+	bool same = true;
+	for (int i = 0; i < len1; i++)
+	{
+		if (word1[i] != word2[i])
+		{
+			same = false;
+		}
+	}
+
+	return same;
 }
 
-*/
+
+void toh(int disk, int from, int tmp, int to)
+{
+	if( disk != 0 ) 
+    {
+        toh( disk - 1, from, to, tmp); // this will move everything to the 
+        cout << from << " -> " << to << endl;
+        toh( disk - 1, tmp, from, to);
+    }
+	// system("pause");
+}
+
+void toh2(int disks)
+{
+	for (int x =1 ; x < (1 << disks); ++x)
+	{
+       int from = (x&x-1)%3;
+       int to = ((x|x-1)+1)%3;
+       cout << "move from tower " << from << " to tower " << to << endl;
+	   system("pause");
+	}
+}
+
+void bubbleSort(char  * word, int len)
+{
+	bool sorted = false;
+	char tmp; // use for swapping
+	int j = 0; // use for interation
+	while (!sorted) 
+	{
+		// loop will stop once there will be nothing to sort
+		sorted = true;
+		++j;
+		for (int i = 0; i < len - j; ++i)
+		{
+			// if higher, swap! 
+			if (word[i] > word[i + 1])
+			{
+				tmp = word[i];
+				word[i] = word[i + 1];
+				word[i + 1] = tmp;
+				sorted = false; // keep on sorting
+            }
+        }
+     }
+}
