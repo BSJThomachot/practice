@@ -9,6 +9,7 @@ void mergeSort(int * arr1, int * arr2,int left, int right);
 void merge(int * arr1, int * arr2, int left, int pivot, int right);
 void shellSort(int * nums, int len);
 void oddEvenSort(int * nums, int len);
+void selectionSort(int * nums, int len);
 
 int main(int argc, char *argv[])
 {
@@ -27,6 +28,16 @@ int main(int argc, char *argv[])
 	}
 	cout << "\n";
 
+	// quicksort
+	int nums8[] = {12,43,13,5,8,99,11,9,20,17};
+    n = 10; // size of array
+	selectionSort(nums8,n);
+
+	for (i = 0; i < n; ++i)
+	{
+		cout << nums[i] << ", ";
+	}
+	cout << "\n";
 
 	// merge sort
 	int nums2[] = {12,43,13,5,8,99,11,9,20,17}; 
@@ -93,8 +104,7 @@ void quickSort(int * nums, int left, int right)
 {
 	int i = left;
 	int j = right;
-	int tmp;
-	int pivot = nums[(left + right) / 2];
+	int pivot = nums[right]; // better to have the pivot on the edge makes it less confusing. 
  
     // cut array in half, 
     while (i <= j)
@@ -112,11 +122,17 @@ void quickSort(int * nums, int left, int right)
 		// swap and keep going
         if (i <= j)
 		{
-			tmp = nums[i];
+			int tmp = nums[i];
 			nums[i] = nums[j];
 			nums[j] = tmp;
 			++i;
 			--j;
+			int k;
+			for (k = 0; k < 10; ++k)
+			{
+				cout << nums[k] << ", ";
+			}
+			system("pause");
          }
       };
  
@@ -303,6 +319,31 @@ void shakerSort(int * nums, int len)
 				nums[i] = temp;
 				sorted = false;
 			}
+		}
+	}
+}
+
+void selectionSort(int * nums, int len)
+{
+	int i,j;
+	int minIndex;
+ 
+	for (j = 0; j < len-1; ++j)
+	{
+		minIndex = j;
+		for ( i = j+1; i < len; ++i)
+		{ 
+			if (nums[i] < nums[minIndex]) 
+			{
+				minIndex = i;
+			}
+		}
+
+		if (minIndex != j ) 
+		{
+			int temp = nums[j];
+			nums[j] = nums[minIndex];
+			nums[minIndex] = temp;
 		}
 	}
 }
